@@ -172,8 +172,7 @@ def improve_code(question, feedback, code):
     The given code has to modified because there are some issues with the image that this code generates namely \
     Feedback: {feedback} \n \
     Inculcate this feedback and update the code given so that it accurately represents this scenario: {question} \
-    In your final output give the updated manim code after making changes in the code as per the feedback, do not give any other text in your final output.
-    """
+    In your final output give the updated manim code after making changes in the code as per the feedback, do not give any other text in your final output."""
     response = callChaptGPT2(prompt)
     return response
 

@@ -213,6 +213,10 @@ def save_code_to_file(code, filename='manim_code.py'):
     """
     Saves the generated Manim code to a file.
     """
+    if code is None:
+        print("No code provided.")
+        return None
+    
     start_index = code.find("```python")  # Find the start of the code block
     if start_index != -1:
         end_index = code.find("```", start_index + len("```python"))  # Find the end of the code block

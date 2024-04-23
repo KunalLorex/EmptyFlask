@@ -6,4 +6,3 @@ Requests
 pandas
 boto3
 botocore
-re

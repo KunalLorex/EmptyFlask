@@ -19,7 +19,7 @@ def extract_mathjax_from_image(prompt, image_url):
     print("calling gpt using image----------------------")
     headers = {
         "Content-Type": "application/json",
-        "Authorization": "Bearer sk-proj-OgVo4fj92RA4jX4daQirT3BlbkFJPPJC4eTs9JyjP7MHt35A"  # Replace with your actual API key
+        "Authorization": "Bearer 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"  # Replace with your actual API key
     }
     payload = {
         "model": "gpt-4-turbo",
@@ -63,7 +63,7 @@ def callChaptGPT2(input):
     # apiKey = "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" //gpt-4 hanging
     # apiKey = "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" // gpt4 expired
     # apiKey = "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"//3.5
-    apiKey = "sk-proj-OgVo4fj92RA4jX4daQirT3BlbkFJPPJC4eTs9JyjP7MHt35A"
+    apiKey = "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"
     url = "https://api.openai.com/v1/chat/completions"
     payload = {
         "model": model,

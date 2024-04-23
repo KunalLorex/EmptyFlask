@@ -1,6 +1,6 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
-# from codesta import main
+from codesta import main
 
 app = Flask(__name__)
 CORS(app)
@@ -15,8 +15,8 @@ def process_input():
         if 'input' in data:
             # Get the value of the 'input' key
             input_text = data['input']
-            # url=main(input_text)
-            url="https://manimnioclass.s3.eu-north-1.amazonaws.com/Imagegen_demo_1.png"
+            # url="https://manimnioclass.s3.eu-north-1.amazonaws.com/Imagegen_demo_1.png"
+            url=main(input_text)
 
             # Return the input text as JSON response
             return jsonify({'output': url})

@@ -1,4 +1,5 @@
 from flask import Flask, request, jsonify
+from codesta import main
 
 app = Flask(__name__)
 
@@ -12,8 +13,10 @@ def process_input():
         if 'input' in data:
             # Get the value of the 'input' key
             input_text = data['input']
+            url=main(input_text)
+
             # Return the input text as JSON response
-            return jsonify({'output': input_text})
+            return jsonify({'output': url})
         else:
             # If 'input' key is missing, return an error message
             return jsonify({'error': 'Input key not found'}), 400

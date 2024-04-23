@@ -213,23 +213,14 @@ def save_code_to_file(code, filename='manim_code.py'):
     """
     Saves the generated Manim code to a file.
     """
-    if code is None:
-        print("No code provided.")
-        return None
-    
-    start_index = code.find("```python")  # Find the start of the code block
-    if start_index != -1:
-        end_index = code.find("```", start_index + len("```python"))  # Find the end of the code block
-        if end_index != -1:
-            code_block = code[start_index + len("```python"):end_index]  # Extract the code block
-            code_block = code_block.strip()  # Remove leading and trailing whitespace
-            with open(filename, 'w') as file:
-                file.write(code_block)  # Write the code block to the file
-            print("Code has been saved to", filename)
-            return filename
-    print("No code block found in input.")
-    return None
-
+    pattern = r"```python(.*?)```"
+    extracted_code = re.search(pattern, code, re.DOTALL)
+    if extracted_code.group(1).strip():
+        code = extracted_code.group(1).strip()
+    with open(filename, 'w') as file:
+        file.write(code.strip("```").strip("python"))
+    print("Code has been saved to", filename)
+    return filename
 
 def execute_manim(filename):
     """
@@ -299,16 +290,17 @@ def gen_image_n_upload(code):
 def main(question):
     steps = create_steps(question)
     code = create_manim_code(question, steps)
-    print(code)
-    
-    url = gen_image_n_upload(code)
+    if code:
+        url = gen_image_n_upload(code)
 
-    feedback = get_feedback_on_image(question,steps,code,url)
-    
-    if 'good-image' not in feedback.lower():
-        final_code = improve_code(question,feedback,code)
-        url = gen_image_n_upload(final_code)
-    return url
+        feedback = get_feedback_on_image(question,steps,code,url)
+        
+        if 'good-image' not in feedback.lower():
+            final_code = improve_code(question,feedback,code)
+            url = gen_image_n_upload(final_code)
+        return url
+    else:
+        return "https://manimnioclass.s3.eu-north-1.amazonaws.com/Imagegen_demo_1.png"
 
 # Example usage
 question = "2 Circles with radius 2 and 4 are touching each other externally"

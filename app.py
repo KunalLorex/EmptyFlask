@@ -1,7 +1,9 @@
 from flask import Flask, request, jsonify
-from codesta import main
+from flask_cors import CORS
+# from codesta import main
 
 app = Flask(__name__)
+CORS(app)
 
 @app.route('/', methods=['POST'])
 def process_input():

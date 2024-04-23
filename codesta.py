@@ -172,7 +172,8 @@ def improve_code(question, feedback, code):
     The given code has to modified because there are some issues with the image that this code generates namely \
     Feedback: {feedback} \n \
     Inculcate this feedback and update the code given so that it accurately represents this scenario: {question} \
-    In your final output give the updated manim code after making changes in the code as per the feedback, do not give any other text in your final output."""
+    In your final output give the updated manim code after making changes in the code as per the feedback, do not give any other text in your final output.
+    """
     response = callChaptGPT2(prompt)
     return response
 
@@ -209,19 +210,22 @@ def upload_file_to_s3(file_path, bucket_name, object_name, aws_access_key_id, aw
     return object_url
 
 def save_code_to_file(code, filename='manim_code.py'):
-  
-    pattern = r"```python(.*?)```"
-    extracted_code = re.search(pattern, code, re.DOTALL)
-    if extracted_code is not None:  # Check if match found
-        if extracted_code.group(1).strip():
-            code = extracted_code.group(1).strip()
-        with open(filename, 'w') as file:
-            file.write(code.strip("```").strip("python"))
-        print("Code has been saved to", filename)
-        return filename
-    else:
-        print("No code block found in input.")
-        return None
+    """
+    Saves the generated Manim code to a file.
+    """
+    start_index = code.find("```python")  # Find the start of the code block
+    if start_index != -1:
+        end_index = code.find("```", start_index + len("```python"))  # Find the end of the code block
+        if end_index != -1:
+            code_block = code[start_index + len("```python"):end_index]  # Extract the code block
+            code_block = code_block.strip()  # Remove leading and trailing whitespace
+            with open(filename, 'w') as file:
+                file.write(code_block)  # Write the code block to the file
+            print("Code has been saved to", filename)
+            return filename
+    print("No code block found in input.")
+    return None
+
 
 def execute_manim(filename):
     """

@@ -209,17 +209,19 @@ def upload_file_to_s3(file_path, bucket_name, object_name, aws_access_key_id, aw
     return object_url
 
 def save_code_to_file(code, filename='manim_code.py'):
-    """
-    Saves the generated Manim code to a file.
-    """
+  
     pattern = r"```python(.*?)```"
     extracted_code = re.search(pattern, code, re.DOTALL)
-    if extracted_code.group(1).strip():
-        code = extracted_code.group(1).strip()
-    with open(filename, 'w') as file:
-        file.write(code.strip("```").strip("python"))
-    print("Code has been saved to", filename)
-    return filename
+    if extracted_code is not None:  # Check if match found
+        if extracted_code.group(1).strip():
+            code = extracted_code.group(1).strip()
+        with open(filename, 'w') as file:
+            file.write(code.strip("```").strip("python"))
+        print("Code has been saved to", filename)
+        return filename
+    else:
+        print("No code block found in input.")
+        return None
 
 def execute_manim(filename):
     """

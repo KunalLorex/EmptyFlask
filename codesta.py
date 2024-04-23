@@ -299,6 +299,7 @@ def gen_image_n_upload(code):
 def main(question):
     steps = create_steps(question)
     code = create_manim_code(question, steps)
+    print(code)
     
     url = gen_image_n_upload(code)
 

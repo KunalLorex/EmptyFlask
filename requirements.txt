@@ -4,5 +4,4 @@ Manim
 Requests
 pandas
 boto3
-sys
 botocore

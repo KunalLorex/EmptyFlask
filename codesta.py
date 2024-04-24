@@ -292,12 +292,16 @@ def main(prompt):
     if code:
         url = gen_image_n_upload(code)
 
-        feedback = get_feedback_on_image(question,steps,code,url)
+        if url:
+            feedback = get_feedback_on_image(question,steps,code,url)
         
-        if 'good-image' not in feedback.lower():
-            final_code = improve_code(feedback,code)
-            url = gen_image_n_upload(final_code)
-        return url
+            if 'good-image' not in feedback.lower():
+                final_code = improve_code(feedback,code)
+                url = gen_image_n_upload(final_code)
+            return url
+        else:
+            print("Failed to create url")
+            return
     else:
         return "https://manimnioclass.s3.eu-north-1.amazonaws.com/Imagegen_demo_1.png"
 

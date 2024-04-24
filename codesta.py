@@ -10,6 +10,8 @@ import boto3
 import pandas as pd
 import sys
 from botocore.config import Config
+import random
+import string
 
 
 def extract_mathjax_from_image(prompt, image_url):
@@ -167,7 +169,7 @@ def get_feedback_on_image(Question, steps, Code, image_url):
     response = extract_mathjax_from_image(prompt, image_url)
     return response
 
-def improve_code(question, feedback, code):
+def improve_code(feedback, code):
     prompt = f"""
     There is an issue with the following manim code given: {code}\n\
     The given code has to modified because there are some issues with the image that this code generates namely \
@@ -267,7 +269,11 @@ def gen_image_n_upload(code):
 
                 # Parameters for S3 upload
                 bucket_name = 'manimnioclass'
+                N = 4
+                res = ''.join(random.choices(string.ascii_uppercase +
+                             string.digits, k=N))
                 object_name = os.path.basename(output_file)
+                object_name = object_name[:-4] + "_" + res + ".png"
                 aws_access_key_id = 'AKIA3S4H4Y22RBEQHAUV'
                 aws_secret_access_key = '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'
 
@@ -281,7 +287,7 @@ def gen_image_n_upload(code):
             else:
                 print("No matching files found.")
         else:
-            final_code = improve_code(question,result,code)
+            final_code = improve_code(result,code)
             filename = save_code_to_file(final_code)
             print("Manim execution failed")
     return None

@@ -258,7 +258,7 @@ def gen_image_n_upload(code):
 
 
             # Filter files to find those that contain 'manim_image' and end with '.png'
-            manim_files = [file for file in files if 'manim_image' in file and file.endswith('.png')]
+            manim_files = [file for file in files if 'manim' in file.lower() and file.endswith('.png')]
 
             # Check if any matching files were found and assign the first one to 'output_file'
             if manim_files:

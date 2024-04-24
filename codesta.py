@@ -290,7 +290,7 @@ def main(prompt):
     steps = create_steps(question)
     code = create_manim_code(question, steps)
     if code:
-        url = gen_image_n_upload(question, code)
+        url = gen_image_n_upload(code)
 
         feedback = get_feedback_on_image(question,steps,code,url)
         

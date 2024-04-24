@@ -6,3 +6,5 @@ Requests
 pandas
 boto3
 botocore
+latex
+texlive-latex-extra

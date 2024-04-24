@@ -164,8 +164,8 @@ def get_feedback_on_image(Question, steps, Code, image_url):
         Steps: {steps} \n\
         Now the manim code for this has been given as following: {Code}\n\
         this code creates the image as shown in the figure. \
-        Check if the image generated correctly captures the Question if not give text feedback on what is wrong in the image, if the image correctly captures the question then return the word good-image. \
-        If there is even a slightest mistake in the position of the figures or the image does not accurately represent the question or if the complete image is not visible and needs to be moved then give feedback on what needs to be changed to accurately represent the question.\
+        Check if the image generated correctly captures the given Question if not give text feedback on what is wrong in the image, if the image correctly captures the question then return the word good-image. \
+        If there is even a slightest mistake in the position of the figures or if the image does not accurately represent the question then give feedback on what is wrong with the image and what needs to be changed to accurately represent the question.\
         """
     response = extract_mathjax_from_image(prompt, image_url)
     return response

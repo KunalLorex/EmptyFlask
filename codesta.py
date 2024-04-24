@@ -284,16 +284,18 @@ def gen_image_n_upload(code):
             print("Manim execution failed")
     return None
 
-def main(question):
+def main(prompt):
+    global question
+    question = prompt
     steps = create_steps(question)
     code = create_manim_code(question, steps)
     if code:
-        url = gen_image_n_upload(code)
+        url = gen_image_n_upload(question, code)
 
         feedback = get_feedback_on_image(question,steps,code,url)
         
         if 'good-image' not in feedback.lower():
-            final_code = improve_code(question,feedback,code)
+            final_code = improve_code(feedback,code)
             url = gen_image_n_upload(final_code)
         return url
     else:

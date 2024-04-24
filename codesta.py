@@ -148,7 +148,8 @@ def create_manim_code(Question, steps):
         7. Use Create instead of 'ShowCreation'.
         8. Make sure that all attributes and functions you used adhere to the manim documentation. If they do not adhere, correct the manim code. The documentation is: {extracted_text}
         9. Include from math import sqrt
-        10. If some objects are too big and do not fit in the screen dimension, you should try and scaled down all objects. This can be done by using something like 'self.play(all_objects.animate.scale(0.5), run_time=2)' where you specify the scale as per the need of the image / animation.
+        10. If some objects are too big and do not fit in the screen dimension, you should try and scaled down all objects. This can be done by using something like 'self.play(all_objects.animate.scale(0.5), run_time=2)' where you specify the scale as per the need of the image / animation. \
+        11. Do not use latex only use text for labels and everything else, there should be NO tex or latex used in the code generated.
         """
     response = callChaptGPT2(prompt)
     return response
@@ -173,6 +174,7 @@ def improve_code(question, feedback, code):
     Feedback: {feedback} \n \
     Inculcate this feedback and update the code given so that it accurately represents this scenario: {question} \
     In your final output give the updated manim code after making changes in the code as per the feedback, do not give any other text in your final output.
+    Also in your final output replace any latex/tex used with corresponding text format.
     """
     response = callChaptGPT2(prompt)
     return response

@@ -18,8 +18,11 @@ def process_input():
             # url="https://manimnioclass.s3.eu-north-1.amazonaws.com/Imagegen_demo_1.png"
             url=main(input_text)
 
-            # Return the input text as JSON response
-            return jsonify({'output': url})
+            if url:
+                # Return the input text as JSON response
+                return jsonify({'output': url})
+            else:
+                return jsonify({'error': 'Failed to generate url'}), 400
         else:
             # If 'input' key is missing, return an error message
             return jsonify({'error': 'Input key not found'}), 400

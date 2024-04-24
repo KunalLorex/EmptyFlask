@@ -12,6 +12,7 @@ import sys
 from botocore.config import Config
 import random
 import string
+import shutil
 
 
 def extract_mathjax_from_image(prompt, image_url):
@@ -231,6 +232,7 @@ def execute_manim(filename):
     Executes the Manim script to generate an animation.
     Command assumes Manim is installed and `manim` command is available.
     """
+    cleanup_media()
     # Example command to run a Manim script and generate an mp4 file in the output directory
     command = f"manim -s -ql {filename}"
     result = run_command(command)
@@ -253,18 +255,34 @@ def gen_image_n_upload(code):
             curr_dir = os.getcwd()
 
             # Path to the directory where the files are expected to be
-            manim_dir = os.path.join(curr_dir, 'media/images/manim_code')
+            base_dir = os.path.join(curr_dir, 'media/images')
 
-            # List all files in the current directory
-            files = os.listdir(manim_dir)
+            # List all items in the base directory
+            items = os.listdir(base_dir)
 
+            # Filter to find directories that contain 'manim' in the name
+            manim_dirs = [item for item in items if 'manim' in item.lower() and os.path.isdir(os.path.join(base_dir, item))]
 
-            # Filter files to find those that contain 'manim_image' and end with '.png'
-            manim_files = [file for file in files if 'manim' in file.lower() and file.endswith('.png')]
+            # List to store found .png files
+            found_png_files = []
+
+            # Iterate over each directory that contains 'manim'
+            for directory in manim_dirs:
+                dir_path = os.path.join(base_dir, directory)
+                # List all files in the current directory
+                files = os.listdir(dir_path)
+
+                # Filter files to find those that end with '.png'
+                png_files = [file for file in files if file.endswith('.png')]
+
+                # Construct full path for each found file and add to the list
+                for file in png_files:
+                    full_path = os.path.normpath(os.path.join(dir_path, file))
+                    found_png_files.append(full_path)
 
             # Check if any matching files were found and assign the first one to 'output_file'
-            if manim_files:
-                output_file = os.path.normpath(os.path.join(manim_dir, manim_files[0]))
+            if found_png_files:
+                output_file = os.path.normpath(found_png_files[0])
                 print(f"Found file: {output_file}")
 
                 # Parameters for S3 upload
@@ -291,6 +309,27 @@ def gen_image_n_upload(code):
             filename = save_code_to_file(final_code)
             print("Manim execution failed")
     return None
+
+def cleanup_media():
+    curr_dir = os.getcwd()
+    manim_dir = os.path.join(curr_dir, 'media/images')
+    
+    # Check if the directory exists
+    if os.path.exists(manim_dir):
+        # List all files and directories within the specified directory
+        for filename in os.listdir(manim_dir):
+            file_path = os.path.join(manim_dir, filename)
+            try:
+                # If it is a file, remove it
+                if os.path.isfile(file_path) or os.path.islink(file_path):
+                    os.unlink(file_path)
+                # If it is a directory, delete it and all its contents
+                elif os.path.isdir(file_path):
+                    shutil.rmtree(file_path)
+            except Exception as e:
+                print(f'Failed to delete {file_path}. Reason: {e}')
+    else:
+        print(f"The directory {manim_dir} does not exist.")
 
 def main(prompt):
     global question
